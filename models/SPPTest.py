@@ -11,7 +11,7 @@ from CellModeller.Integration.CLEulerIntegrator import CLEulerIntegrator
 n_cells = 1000
 side = 40
 Ws = 1
-Wc = 0
+Wc = 0.5
 psi = 0
 
 Fm = 0.5
