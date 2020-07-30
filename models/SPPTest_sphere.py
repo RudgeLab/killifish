@@ -8,8 +8,8 @@ import math
 #Import Euler integrator for solving ODE system of chemical species inside the cells
 from CellModeller.Integration.CLEulerIntegrator import CLEulerIntegrator
 
-n_cells = 3000
-sphere_rad = 30
+n_cells = 1000
+sphere_rad = 100
 
 Wc = 1
 psi = 0

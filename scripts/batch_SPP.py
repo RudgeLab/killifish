@@ -5,6 +5,7 @@ import string
 import shutil
 from pathlib import Path
 from CellModeller.Simulator import Simulator
+import numpy as np
 
 n_steps = 400
 
@@ -13,9 +14,10 @@ def simulate(modfilename, platform, device, steps=50):
     modname = str(name).split('.')[0]
     print('Loading ', modname)
     sys.path.append('.')
-    sim = Simulator(modname, 0.025, clPlatformNum=platform, clDeviceNum=device, saveOutput=True)
+    sim = Simulator(modname, 0.5, clPlatformNum=platform, clDeviceNum=device, saveOutput=True)
     for t in range(n_steps):
         sim.step()
+    del(sim)
 
 def main():
     # Get module name to load
@@ -47,9 +49,9 @@ def main():
         devnum = int(sys.argv[3])
 
     N = 1000
-    for Wc in [0, 0.5]:
-        for psi in [0, 1]:
-            for ftax in [0, 1]:
+    for Wc in np.linspace(0, 0.5, 10):
+        for psi in np.linspace(0, 1, 10):
+            for ftax in [0]:
                 model = template%(N, Wc, psi, ftax)
                 outfn = 'Wc__%g__psi__%g__ftax__%g__%d_cells'%(Wc, psi, ftax, N)
                 outfn = outfn.replace('.', '_') + '.py'

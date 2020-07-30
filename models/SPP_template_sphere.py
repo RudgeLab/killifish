@@ -2,27 +2,23 @@ import random
 from CellModeller.Regulation.ModuleRegulator import ModuleRegulator
 from CellModeller.Biophysics.GeneralModels.CLSPP import CLSPP
 from CellModeller.GUI import Renderers
-from CellModeller.Integration.CLEulerFEMIntegrator import CLEulerFEMIntegrator #add
-from CellModeller.Signalling.FEMDiffusion import FEMDiffusion #add
 import numpy as np
 import math
 
-n_cells = 1000
-sphere_rad = 40
+#Import Euler integrator for solving ODE system of chemical species inside the cells
+from CellModeller.Integration.CLEulerIntegrator import CLEulerIntegrator
+
+n_cells = %d
+sphere_rad = 30
 Ws = 1
-Wc = 0
-psi = 0
+Wc = %f
+psi = %f
 
-Fm = 0.5
+Fm = 1
 gamma_s = 1
-D = 1
+D = 1. 
 fcil = 2 * D * psi
-ftax = 100
-
-# Parameters for FEM solver
-mesh_file = '/home/timrudge/cellmodeller/killifish/notebooks/shell.xml'
-pvd_file = None #'sphere_diffusion_FEM.pvd'
-diffusion_rate = 1000
+ftax = %f
 
 def setup(sim):
     sim.dt = 0.5
@@ -41,17 +37,16 @@ def setup(sim):
             D=D,
             max_spheres=2, 
             grid_spacing=2,
-            cgs_tol=1e-4,
+            cgs_tol=1e-2,
             max_substeps=1,
             spherical=True,
-            compNeighbours=True)
+            compNeighbours=True,
+            printing=False)
 
-    sig = FEMDiffusion(sim, mesh_file, pvd_file, 1, diffusion_rate, sim.dt)
-    integ = CLEulerFEMIntegrator(sim, 1, 1, n_cells, sig)
     # use this file for reg too
     regul = ModuleRegulator(sim)
     # Only biophys and regulation
-    sim.init(biophys, regul, sig, integ)
+    sim.init(biophys, regul, None, None)
 
     # Specify the initial cell and its location in the simulation
     for i in range(n_cells):
@@ -63,8 +58,8 @@ def setup(sim):
 
 
     print('sphere_rad = ', sphere_rad)
-    biophys.addSphere((0,0,0), sphere_rad, 1, 1.)
-    biophys.addSphere((0,0,0), sphere_rad, 1, -1.)
+    biophys.addSphere((0,0,0), sphere_rad, 50, 1.)
+    biophys.addSphere((0,0,0), sphere_rad, 50, -1.)
 
 
     # Add some objects to draw the models
@@ -72,32 +67,13 @@ def setup(sim):
                                             draw_sphere=True, 
                                             sphere_radius=sphere_rad,
                                             sphere_color=[0,0,0,0.5],
-                                            draw_axis=True,
-                                            draw_gradient=True)
+                                            draw_axis=False,
+                                            draw_gradient=False)
     sim.addRenderer(therenderer)
 
-    sim.pickleSteps = 1
-
+    sim.pickleSteps = 10
 def init(cell):
-    # Specify initial concentration of chemical species
-    cell.species[:] = [0]
-    # Specify initial concentration of signaling molecules 
-    cell.signals[:] = [0]
-    cell.color = [0.5, 1, 0.5]
-    cell.t = 0
-
-def specRateCL(): # Add
-    return '''
-    rates[0] = 0.f;
-    '''
-
-    # D1 = diffusion rate of x0 
-    # k1 = production rate of x0
-   
-def sigRateCL(): #Add
-    return '''
-    rates[0] = 1.f; // / (1.f + signals[0]); 
-    '''
+    cell.color = [1,1,1]
 
 def update(cells):
     pass
