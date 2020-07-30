@@ -9,7 +9,7 @@ import math
 from CellModeller.Integration.CLEulerIntegrator import CLEulerIntegrator
 
 n_cells = %d
-sphere_rad = 30
+sphere_rad = %f
 Ws = 1
 Wc = %f
 psi = %f
