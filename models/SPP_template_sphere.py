@@ -8,16 +8,17 @@ import math
 #Import Euler integrator for solving ODE system of chemical species inside the cells
 from CellModeller.Integration.CLEulerIntegrator import CLEulerIntegrator
 
-n_cells = 1000
-sphere_rad = 100
+n_cells = %d
+sphere_rad = 30
+Ws = 1
+Wc = %f
+psi = %f
 
-Wc = 0.5
-psi = 0
-
+Fm = 1
 gamma_s = 1
-D = 1.
+D = 1. 
 fcil = 2 * D * psi
-Fm = 0.5
+ftax = %f
 
 def setup(sim):
     sim.dt = 0.5
@@ -29,15 +30,18 @@ def setup(sim):
             max_cells=n_cells, 
             gamma_s=gamma_s, 
             Fm=Fm,
+            Ws=Ws,
             Wc=Wc,
             fcil=fcil,
-            ftax=0,
+            ftax=ftax,
             D=D,
             max_spheres=2, 
             grid_spacing=2,
+            cgs_tol=1e-2,
             max_substeps=1,
-            cgs_tol=1e-4,
-            spherical=True)
+            spherical=True,
+            compNeighbours=True,
+            printing=False)
 
     # use this file for reg too
     regul = ModuleRegulator(sim)
@@ -67,10 +71,9 @@ def setup(sim):
                                             draw_gradient=False)
     sim.addRenderer(therenderer)
 
-    sim.pickleSteps = 5
-
+    sim.pickleSteps = 10
 def init(cell):
-    cell.color = [0.5,1,0.5]
+    cell.color = [1,1,1]
 
 def update(cells):
     pass

@@ -7,7 +7,7 @@ from CellModeller.Signalling.FEMDiffusion import FEMDiffusion #add
 import numpy as np
 import math
 
-n_cells = 250
+n_cells = 1000
 sphere_rad = 40
 Ws = 1
 Wc = 0
@@ -20,7 +20,7 @@ fcil = 2 * D * psi
 ftax = 100
 
 # Parameters for FEM solver
-mesh_file = '/Users/timrudge/cellmodeller/killifish/notebooks/shell.xml'
+mesh_file = '/home/timrudge/cellmodeller/killifish/notebooks/shell.xml'
 pvd_file = None #'sphere_diffusion_FEM.pvd'
 diffusion_rate = 1000
 

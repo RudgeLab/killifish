@@ -37,9 +37,10 @@ def setup(sim):
             D=D,
             max_planes=6, 
             grid_spacing=2,
-            cgs_tol=1e-4,
+            cgs_tol=1e-2,
             max_substeps=1,
-            spherical=False)
+            spherical=False,
+            printing=False)
 
     # use this file for reg too
     regul = ModuleRegulator(sim)
