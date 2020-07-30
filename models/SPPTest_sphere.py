@@ -8,23 +8,22 @@ import math
 #Import Euler integrator for solving ODE system of chemical species inside the cells
 from CellModeller.Integration.CLEulerIntegrator import CLEulerIntegrator
 
-n_cells = 500
-sphere_rad = 100
+n_cells = 3000
+sphere_rad = 30
 
-Wc = 0.5
+Wc = 1
 psi = 0
 
 gamma_s = 1
 D = 1.
 fcil = 2 * D * psi
-Fm = 0.5
+Fm = 1
 
 def setup(sim):
     sim.dt = 0.5
     # Set biophysics, signalling, and regulation models
     
     #max_sqr
-    #biophys = CLBacterium(sim, max_cells=max_cells, jitter_z=False, max_sqs=256**2)
     biophys = CLSPP(sim, 
             max_cells=n_cells, 
             gamma_s=gamma_s, 
@@ -36,8 +35,9 @@ def setup(sim):
             max_spheres=2, 
             grid_spacing=2,
             max_substeps=1,
-            cgs_tol=1e-4,
-            spherical=True)
+            cgs_tol=1e-2,
+            spherical=True,
+            compNeighbours=True)
 
     # use this file for reg too
     regul = ModuleRegulator(sim)
@@ -54,8 +54,8 @@ def setup(sim):
 
 
     print('sphere_rad = ', sphere_rad)
-    biophys.addSphere((0,0,0), sphere_rad, 50, 1.)
-    biophys.addSphere((0,0,0), sphere_rad, 50, -1.)
+    biophys.addSphere((0,0,0), sphere_rad, 10, 1.)
+    biophys.addSphere((0,0,0), sphere_rad, 10, -1.)
 
 
     # Add some objects to draw the models
@@ -67,13 +67,14 @@ def setup(sim):
                                             draw_gradient=False)
     sim.addRenderer(therenderer)
 
-    sim.pickleSteps = 5
+    sim.pickleSteps = 1
 
 def init(cell):
     cell.color = [0.5,1,0.5]
 
 def update(cells):
-    pass
+    for id,cell in cells.items():
+        cell.color = [1,0,0]
 
 def divide(parent, d1, d2):
     pass

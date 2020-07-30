@@ -10,12 +10,12 @@ import math
 n_cells = 800
 side = 40
 Ws = 1
-Wc = 0.5
-psi = 0
+Wc = 0
+psi = 1
 
 Fm = 0.5
 gamma_s = 1
-D = 1
+D = 0.5
 fcil = 2 * D * psi
 ftax = 1
 
@@ -42,13 +42,13 @@ def setup(sim):
             D=D,
             max_planes=6, 
             grid_spacing=2,
-            cgs_tol=1e-4,
+            cgs_tol=1e-2,
             max_substeps=1,
             spherical=False,
             compNeighbours=True)
 
     sig = GridDiffusion(sim, 1, grid_dim, grid_size, grid_orig, [1])
-    integ = CLEulerSigIntegrator(sim, 1, 1, n_cells, sig, deg_rate=1, boundcond='constant')
+    integ = CLEulerSigIntegrator(sim, 1, 1, n_cells, sig, deg_rate=0, boundcond='constant')
     # use this file for reg too
     regul = ModuleRegulator(sim)
     # Only biophys and regulation
@@ -105,12 +105,10 @@ def specRateCL(): # Add
     rates[0] = 0.f;
     '''
 
-    # D1 = diffusion rate of x0 
-    # k1 = production rate of x0
    
 def sigRateCL(): #Add
     return '''
-    rates[0] = 1.f; // / (1.f + signals[0]); 
+    rates[0] = 0.f; // / (1.f + signals[0]); 
     '''
 
 def update(cells):

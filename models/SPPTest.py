@@ -35,11 +35,12 @@ def setup(sim):
             fcil=fcil,
             ftax=ftax,
             D=D,
-            max_planes=6, 
+            max_planes=4, 
             grid_spacing=2,
-            cgs_tol=1e-4,
+            cgs_tol=1e-2,
             max_substeps=1,
-            spherical=False)
+            spherical=False,
+            printing=False)
 
     # use this file for reg too
     regul = ModuleRegulator(sim)
@@ -76,10 +77,10 @@ def setup(sim):
     therenderer = Renderers.GLSphereRenderer(sim, draw_axis=False, draw_nbr_dir=False)
     sim.addRenderer(therenderer)
 
-    sim.pickleSteps = 1
+    sim.pickleSteps = 10
 
 def init(cell):
-    cell.color = [1,1,1]
+    cell.color = [0.5,1,0.5]
 
 def update(cells):
     pass
