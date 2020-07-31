@@ -17,11 +17,13 @@ def main():
         template = open(sys.argv[1], 'rt').read()
 
     N = 3000
+    sphere_rad = 30
+    iters = 10
     for Wc in [1]: #np.linspace(0, 1, 10):
-        for psi in np.linspace(0, 1, 10):
+        for psi in [0,1]: #np.linspace(0, 1, 10):
             for ftax in [0]:
-                model = template%(N, Wc, psi, ftax)
-                outfn = 'Wc__%g__psi__%g__ftax__%g__%d_cells'%(Wc, psi, ftax, N)
+                model = template%(N, sphere_rad, Wc, psi, ftax)
+                outfn = 'Wc__%g__psi__%g__ftax__%g__%d_cells_sphere_%d'%(Wc, psi, ftax, N, sphere_rad)
                 outfn = outfn.replace('.', '_') + '.py'
                 print('Creating model file %s'%outfn)
                 outf = open(outfn, 'wt')

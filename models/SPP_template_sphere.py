@@ -20,6 +20,7 @@ D = 1.
 fcil = 2 * D * psi
 ftax = %f
 
+
 def setup(sim):
     sim.dt = 0.5
     # Set biophysics, signalling, and regulation models
@@ -72,6 +73,7 @@ def setup(sim):
     sim.addRenderer(therenderer)
 
     sim.pickleSteps = 10
+
 def init(cell):
     cell.color = [1,1,1]
 
