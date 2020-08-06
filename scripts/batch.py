@@ -46,6 +46,7 @@ def main():
         devnum = int(sys.argv[3])
 
     # Set up complete, now run the simulation
+    print(f"moduleName: {moduleName}")
     simulate(moduleName, platnum, devnum)
 
 # Make sure we are running as a script
