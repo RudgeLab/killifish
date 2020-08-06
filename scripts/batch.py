@@ -6,7 +6,7 @@ import shutil
 
 from CellModeller.Simulator import Simulator
 
-n_steps = 1000
+n_steps = 10000
 
 def simulate(modfilename, platform, device, steps=1000):
     (path,name) = os.path.split(modfilename)

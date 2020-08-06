@@ -16,8 +16,8 @@ def main():
     else:
         template = open(sys.argv[1], 'rt').read()
 
-    N = 3000
-    sphere_rad = 30
+    N = 1000
+    sphere_rad = 40
     iters = 10
     for Wc in [1]: #np.linspace(0, 1, 10):
         for psi in [0,1]: #np.linspace(0, 1, 10):
