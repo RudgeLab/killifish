@@ -20,6 +20,7 @@ D = %f
 fcil = 2 * D * psi
 ftax = %f
 
+forg = %f # External organising center repolarization
 
 def setup(sim):
     sim.dt = 0.5
@@ -35,11 +36,13 @@ def setup(sim):
             Wc=Wc,
             fcil=fcil,
             ftax=ftax,
+            forg=forg,
             D=D,
             max_spheres=2, 
             grid_spacing=2,
             cgs_tol=1e-2,
             max_substeps=1,
+            max_contacts=32,
             spherical=True,
             compNeighbours=True,
             printing=False)
