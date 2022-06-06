@@ -10,42 +10,53 @@ from CellModeller.Integration.CLEulerIntegrator import CLEulerIntegrator
 
 n_cells = %d
 sphere_rad = %f
-Ws = 1
+
 Wc = %f
+
 psi = %f
 
-Fm = 1
 gamma_s = 1
 D = %f
 fcil = 2 * D * psi
+Fm = 1
 ftax = %f
-
 forg = %f # External organising center repolarization
+chi = %f
+
+org=[0,0,-sphere_rad,0]
+porg = tuple(org)
+c_o = 0
+c_m = 10
 
 def setup(sim):
-    sim.dt = 0.5
+    sim.dt = 1.0
     # Set biophysics, signalling, and regulation models
     
     #max_sqr
     #biophys = CLBacterium(sim, max_cells=max_cells, jitter_z=False, max_sqs=256**2)
-    biophys = CLSPP(sim, 
+    biophys = CLSPP(sim,
+    	    max_contacts=32, 
             max_cells=n_cells, 
             gamma_s=gamma_s, 
             Fm=Fm,
-            Ws=Ws,
             Wc=Wc,
             fcil=fcil,
             ftax=ftax,
             forg=forg,
+            porg=porg,
+            chi=chi,
+            c_o=c_o,
+            c_m=c_m,
             D=D,
             max_spheres=2, 
             grid_spacing=2,
-            cgs_tol=1e-2,
             max_substeps=1,
-            max_contacts=32,
+            cgs_tol=1e-2,
             spherical=True,
-            compNeighbours=True,
-            printing=False)
+            steering_along_grad=True,
+            vel_change=False,
+            slowing_source=False,
+            compNeighbours=True)
 
     # use this file for reg too
     regul = ModuleRegulator(sim)
@@ -62,8 +73,8 @@ def setup(sim):
 
 
     print('sphere_rad = ', sphere_rad)
-    biophys.addSphere((0,0,0), sphere_rad, 50, 1.)
-    biophys.addSphere((0,0,0), sphere_rad, 50, -1.)
+    biophys.addSphere((0,0,0), sphere_rad, 10, 1.)
+    biophys.addSphere((0,0,0), sphere_rad, 10, -1.)
 
 
     # Add some objects to draw the models
@@ -78,7 +89,7 @@ def setup(sim):
     sim.pickleSteps = 10
 
 def init(cell):
-    cell.color = [1,1,1]
+    cell.color = [1,0,0]
 
 def update(cells):
     pass

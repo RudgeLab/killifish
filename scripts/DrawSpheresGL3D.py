@@ -8,9 +8,9 @@ from PIL import ImageOps
 from CellModeller.GUI.Renderers import GLSphereRenderer
 
 import sys
-import pickle
+import pickle as pickle
 
-fname = '/Users/timrudge/cellmodeller/data/SPPTest_diffusion-20-07-25-22-41/step-00000.pickle'
+fname = '/Users/guillermo/Code/killifish/pickles/'#/data/SPPTest_diffusion-20-07-25-22-41/step-00000.pickle'
 width, height = 1024, 1024
 
 class DummySim:
@@ -122,7 +122,7 @@ def render_scene(dummy_sim, renderer, outfn):
     scene_renderer = GLRenderer(width, height)
     # change this for zoom
     scene_renderer.translate([0,0,-75])
-    scene_renderer.rotate([0,0,1], -135)
+    scene_renderer.rotate([0,0,1], -65)
     scene_renderer.rotate([1,0,0], -60.)
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -191,14 +191,19 @@ def main():
     #infns = sys.argv[1:]
     
     # massive files in this directory
-    path = os.getcwd()+"/Dens__0_2/"
+    path = os.getcwd()+"/pickles"
     folders = os.listdir(path)
+    print(folders)
     folders.sort()
+    folders = folders[1:]
     for folder in folders:
+        print(folder)
         #folder='Wc__1__psi__2__D__1__ftax__0__500__cells_sphere__15__forg__0-20-10-22-21-24'
-        infns = os.listdir(path+folder)
+        infns = os.listdir(os.path.join(path,folder))
         infns.sort()
-        infns = infns[2:]    
+        infns = infns[1:]
+        os.mkdir(os.path.join('figs',folder))
+        print(infns)   
         
         for infn in infns:
             print(infn)
@@ -206,14 +211,19 @@ def main():
             if infn[-7:]!='.pickle':
                 print(('Ignoring file %s, because its not a pickle...'%(infn)))
                 continue
-    
+
+            #########################
+            # Just some pickles
+            #pics = ['00000','00080','00500','00800']
+            #if any(pic in infn for pic in pics):
+            #########################
             outfn = infn.replace('.pickle', '.png')
-            outfn = os.path.basename(outfn) # Put output in this dir
+            outfn = os.path.basename(os.path.join(folder,outfn)) # Put output in this dir
             print(('Processing %s to generate %s'%(infn,outfn)))
             
             # Import data
             print(path+folder+"/"+infn)
-            data = pickle.load(open(path+folder+"/"+infn, 'rb'))
+            data = pickle.load(open(os.path.join(path,folder,infn), 'rb'))
             if not data:
                 print("Problem importing data!")
                 return
@@ -232,6 +242,8 @@ def main():
                                         #sphere_color=[0,0,0,0.5],
                                         sphere_color=[0,0,0,0.2],
                                         sphere_radius=25)
-            render_scene(dummy_sim, renderer, path+folder+"/"+outfn)
+            render_scene(dummy_sim, renderer, os.path.join(os.getcwd(),"figs",folder,outfn))
+            #else:
+             #   continue
         #break
 main()
